@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    </head>
+<body>
+
+<h1>Přihlášení</h1>
+
+<label for="fname">Jméno:</label><br>
+<input type="text" id="user_name" name="fname"><br>
+<label for="lname">Heslo:</label><br>
+<input type="password" id="psswd" name="lname"><br><br>
+<button id="prihlasit" onclick="myFunctionPrihlas()">Pihlásit</button>
+<a id="hlaskaPrihaseni"></a>
+
+<p>Přidej geolokaci...</p>
+
+<p id="ovladani"></p>
+
+<p id="demo"></p>
+<p>ulozeno:</p>
+<p id="nacteno"></p>
+<br>
+<p id="nacteno2"></p>
+<p id="pocetPrvkuUlozeno"></p>
+
+<script>
+    
+    var pocetPrvku = 0;
+    var pocet = 0;
+    var Latitude;
+    var Longitude;
+var x = document.getElementById("demo");
+
+function getLocation() {
+    
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+    
+    Latitude = position.coords.latitude;
+    Longitude = position.coords.longitude;
+  x.innerHTML = "Nyní uloženo na: Latitude: " + position.coords.latitude + 
+  "<br>Longitude: " + position.coords.longitude;
+
+//ulozeni
+
+const souradnice = ["Latitude: "+Latitude, "Longitude: "+Longitude];
+console.log(souradnice);
+localStorage.setItem(pocet,souradnice);
+//localStorage.setItem(pocet,Longitude);
+pocet ++;
+pocetPrvku ++;
+console.log(pocet);
+localStorage.setItem("pocet",pocetPrvku);
+console.log("pocet prvku: "+pocet);
+}
+
+function vypisUlozeno() {  
+    //nacitani
+var ulozenoPrvku = 0;
+ulozenoPrvku = innerHTML = localStorage.getItem("pocet");
+ console.log(ulozenoPrvku);
+ $(".smaz").remove();
+ if(ulozenoPrvku == null){$("#nacteno").append("<a class='smaz'>zatím nic</a>");}
+ for(var xx = 0;xx < ulozenoPrvku;xx++){
+    console.log(xx);
+    $("#nacteno").append("<a class='smaz'><br>"+localStorage.getItem(xx)+"</a>");
+    } 
+  }
+function smazat() {   
+    localStorage.clear();
+  }
+</script>
+<script>
+//prihlaseni
+function myFunctionPrihlas() {
+  
+  users = $("#user_name").val();
+  psswds = $("#psswd").val();
+  
+  if(users == "v" && psswds == "t"){
+	  //var x = document.getElementById("ChcuPridat");
+	//x.style.display = "block";
+	document.getElementById("hlaskaPrihaseni").innerHTML = "Uspěšně přihlášeno...";
+  $("#ovladani").append("<button onclick='getLocation()'>Try It</button> <button onclick='smazat()'>Smazat vse</button> <button onclick='vypisUlozeno()'>Ulozeno</button>");
+
+  }else{
+	  
+	  document.getElementById("hlaskaPrihaseni").innerHTML = "Špatné heslo/jmeno";
+	  
+  }
+}
+vypisUlozeno();
+</script>
+
+</body>
+</html>
